@@ -1,0 +1,39 @@
+- Vas a tener 4 niveles de rondas: Round 1, Round 2, Round 3, Round 4.
+- Cada Round puede ser de 2 tipos: Attack o Defense.
+- Cada Round va a tener un nivel (1,2,3,4), una flag para saber si se ganó o se perdió o se sigue jugando, una flag
+para saber si se ataca o defiende, los IDs de personajes seleccionados para pelear, los IDs de personajes restantes de
+cada jugador, los pillz disponibles de cada jugador, las vidas de cada jugador.
+- Se va armando una especie de árbol, con X(13) rondas en el primer nivel, y sus hijos serán las posibles rondas de 2do
+nivel.
+- Antes de empezar se chequea y se setea si cada personaje tiene bonus activo o no.
+- Al finalizar se empieza a loopear en las rondas, recursivamente, y se busca algun happy path (que sea victoria segura).
+
+Round Attack:
+- Yo tengo X(4) personajes posibles.
+- Yo tengo X(13) cantidades de pillz posibles.
+- Por cada posibilidad y por cada personaje rival se analizan los 3 casos críticos: el rival usa 0 pillz, el rival usa
+solo los pillz necesarios, el rival usa solo los pillz necesarios c/fury.
+
+Round Defense:
+- El rival tiene X(4) personajes posibles.
+- El rival tiene X(13) cantidades de pillz posibles.
+- Por cada posibilidad y por cada personaje propio se analizan los 3 casos críticos: yo uso 0 pillz, yo uso solo los
+pillz necesarios, yo uso solo los pillz necesarios c/fury.
+
+
+Flujo de Round:
+- Se batalla con los parametros recibidos.
+- Luego se loopea por cada posibilidad restante (como se menciona
+en "Round Attack/Defense")
+- Se chequea si alguna habilidad o bonus bloquea la habilidad o bonus del otro, y se flaguean como inutilizables.
+- Se crea una nueva Round con los parametros correspondientes.
+- $round->batallar().
+
+Flujo de Batalla:
+- Se chequean modificaciones de poder por habilidades o bonus NO INACTIVOS.
+- Se chequean modificaciones de ataque por habilidades o bonus NO INACTIVOS.
+- Se calcula el ataque de cada personaje, aplicando las modificaciones de ataque o poder pertinentes.
+- Se restan los pillz usados de los disponibles
+- Se determina quién ganó, marcando las flags correspondientes.
+- Se restan vidas de las disponibles
+- Se marcan flags o aplican modificaciones de after-victory o after-defeat.
